@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1792906594799,
+      "tag": "0000_cms_core_schema",
+      "breakpoints": true
+    }
+  ]
 }
