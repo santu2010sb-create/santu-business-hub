@@ -8,6 +8,13 @@
       "when": 1792906594799,
       "tag": "0000_cms_core_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792906663435,
+      "tag": "0001_site_media_storage_policies",
+      "breakpoints": true
     }
   ]
 }
