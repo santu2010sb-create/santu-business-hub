@@ -19,6 +19,8 @@ import { Route as SiteAboutRouteImport } from './routes/_site/about'
 import { Route as SiteContactRouteImport } from './routes/_site/contact'
 import { Route as SiteFaqRouteImport } from './routes/_site/faq'
 import { Route as SiteServicesRouteImport } from './routes/_site/services'
+import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin/content'
+import { Route as AuthenticatedPreviewPageRouteImport } from './routes/_authenticated/preview/$page'
 import { Route as ApiPublicMediaFileRouteImport } from './routes/api/public/media.$file'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -69,6 +71,18 @@ const SiteServicesRoute = SiteServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => SiteRouteRoute,
 } as any)
+const AuthenticatedAdminContentRoute =
+  AuthenticatedAdminContentRouteImport.update({
+    id: '/content',
+    path: '/content',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedPreviewPageRoute =
+  AuthenticatedPreviewPageRouteImport.update({
+    id: '/preview/$page',
+    path: '/preview/$page',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApiPublicMediaFileRoute = ApiPublicMediaFileRouteImport.update({
   id: '/api/public/media/$file',
   path: '/api/public/media/$file',
@@ -79,22 +93,26 @@ export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/admin': typeof AuthenticatedAdminRouteRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/about': typeof SiteAboutRoute
   '/contact': typeof SiteContactRoute
   '/faq': typeof SiteFaqRoute
   '/services': typeof SiteServicesRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
+  '/preview/$page': typeof AuthenticatedPreviewPageRoute
   '/api/public/media/$file': typeof ApiPublicMediaFileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof SiteIndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/admin': typeof AuthenticatedAdminRouteRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/about': typeof SiteAboutRoute
   '/contact': typeof SiteContactRoute
   '/faq': typeof SiteFaqRoute
   '/services': typeof SiteServicesRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
+  '/preview/$page': typeof AuthenticatedPreviewPageRoute
   '/api/public/media/$file': typeof ApiPublicMediaFileRoute
 }
 export interface FileRoutesById {
@@ -103,12 +121,14 @@ export interface FileRoutesById {
   '/_site': typeof SiteRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_site/about': typeof SiteAboutRoute
   '/_site/contact': typeof SiteContactRoute
   '/_site/faq': typeof SiteFaqRoute
   '/_site/services': typeof SiteServicesRoute
   '/_site/': typeof SiteIndexRoute
+  '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
+  '/_authenticated/preview/$page': typeof AuthenticatedPreviewPageRoute
   '/api/public/media/$file': typeof ApiPublicMediaFileRoute
 }
 export interface FileRouteTypes {
@@ -122,6 +142,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/services'
+    | '/admin/content'
+    | '/preview/$page'
     | '/api/public/media/$file'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -133,6 +155,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/services'
+    | '/admin/content'
+    | '/preview/$page'
     | '/api/public/media/$file'
   id:
     | '__root__'
@@ -146,6 +170,8 @@ export interface FileRouteTypes {
     | '/_site/faq'
     | '/_site/services'
     | '/_site/'
+    | '/_authenticated/admin/content'
+    | '/_authenticated/preview/$page'
     | '/api/public/media/$file'
   fileRoutesById: FileRoutesById
 }
@@ -229,6 +255,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteServicesRouteImport
       parentRoute: typeof SiteRouteRoute
     }
+    '/_authenticated/admin/content': {
+      id: '/_authenticated/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/preview/$page': {
+      id: '/_authenticated/preview/$page'
+      path: '/preview/$page'
+      fullPath: '/preview/$page'
+      preLoaderRoute: typeof AuthenticatedPreviewPageRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/public/media/$file': {
       id: '/api/public/media/$file'
       path: '/api/public/media/$file'
@@ -239,12 +279,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRoute
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedPreviewPageRoute: typeof AuthenticatedPreviewPageRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRoute,
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedPreviewPageRoute: AuthenticatedPreviewPageRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
