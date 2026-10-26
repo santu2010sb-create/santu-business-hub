@@ -20,6 +20,8 @@ import { Route as SiteContactRouteImport } from './routes/_site/contact'
 import { Route as SiteFaqRouteImport } from './routes/_site/faq'
 import { Route as SiteServicesRouteImport } from './routes/_site/services'
 import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin/content'
+import { Route as AuthenticatedAdminFaqsRouteImport } from './routes/_authenticated/admin/faqs'
+import { Route as AuthenticatedAdminServicesRouteImport } from './routes/_authenticated/admin/services'
 import { Route as AuthenticatedPreviewPageRouteImport } from './routes/_authenticated/preview/$page'
 import { Route as ApiPublicMediaFileRouteImport } from './routes/api/public/media.$file'
 
@@ -77,6 +79,17 @@ const AuthenticatedAdminContentRoute =
     path: '/content',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminFaqsRoute = AuthenticatedAdminFaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminServicesRoute =
+  AuthenticatedAdminServicesRouteImport.update({
+    id: '/services',
+    path: '/services',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedPreviewPageRoute =
   AuthenticatedPreviewPageRouteImport.update({
     id: '/preview/$page',
@@ -99,6 +112,8 @@ export interface FileRoutesByFullPath {
   '/faq': typeof SiteFaqRoute
   '/services': typeof SiteServicesRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
+  '/admin/faqs': typeof AuthenticatedAdminFaqsRoute
+  '/admin/services': typeof AuthenticatedAdminServicesRoute
   '/preview/$page': typeof AuthenticatedPreviewPageRoute
   '/api/public/media/$file': typeof ApiPublicMediaFileRoute
 }
@@ -112,6 +127,8 @@ export interface FileRoutesByTo {
   '/faq': typeof SiteFaqRoute
   '/services': typeof SiteServicesRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
+  '/admin/faqs': typeof AuthenticatedAdminFaqsRoute
+  '/admin/services': typeof AuthenticatedAdminServicesRoute
   '/preview/$page': typeof AuthenticatedPreviewPageRoute
   '/api/public/media/$file': typeof ApiPublicMediaFileRoute
 }
@@ -128,6 +145,8 @@ export interface FileRoutesById {
   '/_site/services': typeof SiteServicesRoute
   '/_site/': typeof SiteIndexRoute
   '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
+  '/_authenticated/admin/faqs': typeof AuthenticatedAdminFaqsRoute
+  '/_authenticated/admin/services': typeof AuthenticatedAdminServicesRoute
   '/_authenticated/preview/$page': typeof AuthenticatedPreviewPageRoute
   '/api/public/media/$file': typeof ApiPublicMediaFileRoute
 }
@@ -143,6 +162,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/services'
     | '/admin/content'
+    | '/admin/faqs'
+    | '/admin/services'
     | '/preview/$page'
     | '/api/public/media/$file'
   fileRoutesByTo: FileRoutesByTo
@@ -156,6 +177,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/services'
     | '/admin/content'
+    | '/admin/faqs'
+    | '/admin/services'
     | '/preview/$page'
     | '/api/public/media/$file'
   id:
@@ -171,6 +194,8 @@ export interface FileRouteTypes {
     | '/_site/services'
     | '/_site/'
     | '/_authenticated/admin/content'
+    | '/_authenticated/admin/faqs'
+    | '/_authenticated/admin/services'
     | '/_authenticated/preview/$page'
     | '/api/public/media/$file'
   fileRoutesById: FileRoutesById
@@ -262,6 +287,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/faqs': {
+      id: '/_authenticated/admin/faqs'
+      path: '/faqs'
+      fullPath: '/admin/faqs'
+      preLoaderRoute: typeof AuthenticatedAdminFaqsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/services': {
+      id: '/_authenticated/admin/services'
+      path: '/services'
+      fullPath: '/admin/services'
+      preLoaderRoute: typeof AuthenticatedAdminServicesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/preview/$page': {
       id: '/_authenticated/preview/$page'
       path: '/preview/$page'
@@ -281,11 +320,15 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
+  AuthenticatedAdminFaqsRoute: typeof AuthenticatedAdminFaqsRoute
+  AuthenticatedAdminServicesRoute: typeof AuthenticatedAdminServicesRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
+    AuthenticatedAdminFaqsRoute: AuthenticatedAdminFaqsRoute,
+    AuthenticatedAdminServicesRoute: AuthenticatedAdminServicesRoute,
   }
 
 const AuthenticatedAdminRouteRouteWithChildren =
