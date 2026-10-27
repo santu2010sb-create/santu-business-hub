@@ -191,9 +191,12 @@ function SiteFooter({ site }: { site: SiteData }) {
           <p>
             © {new Date().getFullYear()} {site.branding.business_name}. {site.footer.note}
           </p>
-          <Link to="/admin" className="hover:text-teal">
-            Staff login
-          </Link>
+<Link to="/privacy-policy" className="hover:text-teal">
+  Privacy Policy
+</Link>
+<Link to="/admin" className="hover:text-teal">
+  Staff login
+</Link>
         </div>
       </div>
     </footer>
