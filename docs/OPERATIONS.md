@@ -47,10 +47,11 @@ Admin: `/admin` (sign in at `/auth`, password reset at `/reset-password`).
   bots (hidden honeypot field + minimum 3-second fill time) and allows max 5 enquiries per hour per
   network address (stored as a one-way hash, not the raw IP).
 - Images live in a **private** storage bucket (`site-media`, 2 MB limit, PNG/JPG/WebP only enforced by
-  storage policy). The site serves them via `/api/public/media/<file>` using only the public key.
-  (Public buckets are blocked by your workspace policy; this route works without them.)
+  storage policy). Only admins can read the bucket directly. The site serves images via
+  `/api/public/media/<file>`, which reads them server-side and only serves files registered in the
+  media library. (Public buckets are blocked by your workspace policy; this route works without them.)
 - No service-role key is used in browser code. The only privileged server code is the enquiry insert
-  in `src/lib/enquiry.functions.ts`, loaded inside the handler.
+  in `src/lib/enquiry.functions.ts` and the media route, both loading it inside the handler.
 
 ## 5. Deployment
 

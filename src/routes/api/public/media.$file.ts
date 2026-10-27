@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MEDIA_PATH_PATTERN } from "@/lib/media-validation";
 
-// Serves website images from the private storage bucket. Only flat
-// "<uuid>.<ext>" names are accepted; reads use the publishable key and the
-// public SELECT policy on site-media, so no privileged key is involved.
+// Serves website images from the private storage bucket. Visitors have no
+// direct storage access; this route only serves flat "<uuid>.<ext>" names that
+// are registered in the media library, reading them server-side.
 export const Route = createFileRoute("/api/public/media/$file")({
   server: {
     handlers: {
@@ -12,17 +12,20 @@ export const Route = createFileRoute("/api/public/media/$file")({
         if (!MEDIA_PATH_PATTERN.test(file)) {
           return new Response("Not found", { status: 404 });
         }
-        const url = process.env["SUPABASE_URL"]!.replace(/\/+$/, "");
-        const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-        const res = await fetch(`${url}/storage/v1/object/site-media/${file}`, {
-          headers: { apikey: key },
-        });
-        if (!res.ok || !res.body) {
-          return new Response("Not found", { status: 404 });
-        }
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const { data: row } = await supabaseAdmin
+          .from("media")
+          .select("mime_type")
+          .eq("path", file)
+          .maybeSingle();
+        if (!row) return new Response("Not found", { status: 404 });
+
+        const { data: blob, error } = await supabaseAdmin.storage.from("site-media").download(file);
+        if (error || !blob) return new Response("Not found", { status: 404 });
+
         const ext = file.split(".").pop();
         const type = ext === "png" ? "image/png" : ext === "webp" ? "image/webp" : "image/jpeg";
-        return new Response(res.body, {
+        return new Response(blob.stream(), {
           headers: {
             "content-type": type,
             "cache-control": "public, max-age=31536000, immutable",

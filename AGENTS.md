@@ -15,8 +15,8 @@
 - Content shape and defaults are defined once in `src/lib/content.ts` (`mergeSection`); add new editable fields there so seed data, admin forms and public pages stay in sync.
 - Public pages render through `src/components/site/pages.tsx` components that take `SiteData`, so the admin preview reuses the exact same rendering with draft data.
 - Contact details pass through `publicContact` before publishing and in `getPublicSite`, so unverified values never reach visitors or page source.
-- Admin writes use the browser client under RLS (`has_role(auth.uid(),'admin')`); only enquiry inserts use the service-role client, inside the server function, because they need rate limiting.
-- Images are in the private `site-media` bucket and served by `/api/public/media/$file` (flat `<uuid>.<ext>` names only) because the workspace blocks public buckets.
+- Admin writes use the browser client under RLS (`has_role(auth.uid(),'admin')`); the service-role client is used only for enquiry inserts (rate limiting) and the media route, loaded inside the handler.
+- Images are in the private `site-media` bucket (storage reads are admin-only) and served by `/api/public/media/$file`, which only serves flat `<uuid>.<ext>` names registered in `media`, because the workspace blocks public buckets.
 - The first auth user ever created is made admin by a trigger; later sign-ups get no role, so never grant roles from client code or user metadata.
 - Business rules (validation, spam limits, contact visibility, upload limits) live in plain modules under `src/lib` and are covered by `src/test/business-rules.test.ts`.
 - Operator documentation lives in `docs/OPERATIONS.md`; update it when setup, security or deployment steps change.
