@@ -124,8 +124,8 @@ export function mergeSection<K extends SectionKey>(key: K, raw: unknown): Sectio
     if (def !== null && typeof def === "object") {
       const f = v && typeof v === "object" ? (v as Record<string, unknown>) : {};
       out[k] = {
-        value: typeof f.value === "string" ? f.value : "",
-        verified: f.verified === true,
+        value: typeof f["value"] === "string" ? f["value"] : "",
+        verified: f["verified"] === true,
       };
     } else if (k.endsWith("_id")) {
       out[k] = typeof v === "string" && v.length > 0 ? v : null;

@@ -17,7 +17,7 @@ export function Logo({ site, inverted = false }: { site: SiteData; inverted?: bo
     );
   }
 
-  const [first, ...rest] = name.split(" ");
+  const [first = "", ...rest] = name.split(" ");
   return (
     <span className="flex items-center gap-2.5">
       <span
@@ -27,8 +27,10 @@ export function Logo({ site, inverted = false }: { site: SiteData; inverted?: bo
           inverted ? "bg-teal text-navy-deep" : "bg-navy text-navy-foreground",
         )}
       >
-        {first.charAt(0)}
-        <span className="text-teal">{rest[0]?.charAt(0) ?? ""}</span>
+        <span className="flex leading-none">
+          {first.charAt(0)}
+          <span className="text-teal">{rest[0]?.charAt(0) ?? ""}</span>
+        </span>
       </span>
       <span className="flex flex-col leading-none">
         <span

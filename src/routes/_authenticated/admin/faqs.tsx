@@ -50,7 +50,7 @@ function FaqAdmin() {
   function save() {
     if (!editing) return;
     const parsed = faqSchema.safeParse(editing.form);
-    if (!parsed.success) return setFormError(parsed.error.issues[0].message);
+    if (!parsed.success) return setFormError(parsed.error.issues[0]?.message ?? "Please check the form.");
     const nextOrder = Math.max(0, ...(rows ?? []).map((r) => r.sort_order)) + 1;
     run.mutate(
       async () => {

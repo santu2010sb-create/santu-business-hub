@@ -85,6 +85,6 @@ export function moveIds<T extends { id: string }>(rows: T[], index: number, dir:
   const ids = rows.map((r) => r.id);
   const j = index + dir;
   if (j < 0 || j >= ids.length) return ids;
-  [ids[index], ids[j]] = [ids[j], ids[index]];
+  [ids[index], ids[j]] = [ids[j]!, ids[index]!];
   return ids;
 }

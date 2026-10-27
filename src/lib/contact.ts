@@ -1,4 +1,4 @@
-import type { ContactContent, ContactKey } from "./content";
+import { CONTACT_KEYS as CONTACT_KEY_LIST, type ContactContent, type ContactKey } from "./content";
 
 export const CONTACT_LABELS: Record<ContactKey, string> = {
   email: "Business email",
@@ -57,4 +57,17 @@ export function validateContactValue(key: ContactKey, value: string): string | n
   } catch {
     return "Use a full link starting with https://";
   }
+}
+
+/**
+ * The copy of contact settings that may leave the admin area: unverified values
+ * are blanked so they never reach the public database row or the page source.
+ */
+export function publicContact(contact: ContactContent): ContactContent {
+  const out = { ...contact };
+  for (const key of CONTACT_KEY_LIST) {
+    const f = contact[key];
+    out[key] = f.verified ? { ...f } : { value: "", verified: false };
+  }
+  return out;
 }
