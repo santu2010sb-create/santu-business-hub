@@ -1,29 +1,16 @@
-# Welcome to your Lovable project
+# SANTU BUSINESS SERVICES website
 
-This project was built with [Lovable](https://lovable.dev).
+Business website with a built-in admin panel (content, services, FAQs, media, contact settings, enquiries).
 
-## Build with Lovable
-
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- Owner guide, security model, deployment, backup and migration: **[docs/OPERATIONS.md](docs/OPERATIONS.md)**
+- Admin area: `/admin` (sign in at `/auth`)
 
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
 npm i
 npm run dev
+npm test
 ```
 
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+Built with TanStack Start, React, TypeScript, Tailwind CSS and Lovable Cloud.
