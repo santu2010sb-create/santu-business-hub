@@ -17,7 +17,7 @@ export function Logo({ site, inverted = false }: { site: SiteData; inverted?: bo
     );
   }
 
-  const [first, ...rest] = name.split(" ");
+  const [first = "", ...rest] = name.split(" ");
   return (
     <span className="flex items-center gap-2.5">
       <span

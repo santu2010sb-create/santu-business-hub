@@ -70,7 +70,7 @@ function AuthPage() {
     }
 
     const parsed = credsSchema.safeParse({ email, password });
-    if (!parsed.success) return setError(parsed.error.issues[0].message);
+    if (!parsed.success) return setError(parsed.error.issues[0]?.message ?? "Please check your details.");
     setBusy(true);
 
     if (mode === "setup") {

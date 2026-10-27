@@ -17,7 +17,7 @@ export function validateImageFile(file: { type: string; size: number }): ImageCh
   if (file.size > MAX_IMAGE_BYTES) {
     return { ok: false, error: "Images must be 2 MB or smaller." };
   }
-  return { ok: true, ext: EXT_BY_TYPE[file.type] };
+  return { ok: true, ext: EXT_BY_TYPE[file.type] ?? "jpg" };
 }
 
 /** Storage file names are flat: <uuid>.<ext>. The media route only serves names of this shape. */
