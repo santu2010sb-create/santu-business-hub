@@ -12,6 +12,8 @@ import {
   type SiteData,
 } from "./content";
 import { validateImageFile } from "./media-validation";
+import { publicContact } from "./contact";
+import type { ContactContent } from "./content";
 
 export async function loadSection<K extends SectionKey>(key: K) {
   const { data, error } = await supabase
@@ -42,7 +44,12 @@ export const saveDraft = (key: SectionKey, value: unknown) => upsertSection(key,
 
 export async function publishSection(key: SectionKey, value: unknown) {
   await upsertSection(key, "draft", value);
-  await upsertSection(key, "published", value);
+  await upsertSection(key, "published", publishable(key, value));
+}
+
+/** What actually goes live for a section (contact strips unverified details). */
+export function publishable(key: SectionKey, value: unknown): unknown {
+  return key === "contact" ? publicContact(value as ContactContent) : value;
 }
 
 /** Assemble the whole site from drafts (falls back to published) for the preview screen. */

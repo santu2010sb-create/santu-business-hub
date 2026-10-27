@@ -79,3 +79,16 @@ describe("image upload rules", () => {
     expect(validateImageFile({ type: "application/pdf", size: 1000 }).ok).toBe(false);
   });
 });
+
+describe("published contact data", () => {
+  it("blanks unverified values so they never reach visitors", async () => {
+    const { publicContact } = await import("@/lib/contact");
+    const c = mergeSection("contact", {
+      email: { value: "secret@example.com", verified: false },
+      phone: { value: "+91 98300 00000", verified: true },
+    });
+    const pub = publicContact(c);
+    expect(pub.email.value).toBe("");
+    expect(pub.phone.value).toBe("+91 98300 00000");
+  });
+});

@@ -10,6 +10,7 @@ import {
   type SectionMap,
   type SiteData,
 } from "./content";
+import { publicContact } from "./contact";
 
 /** Read-only client using the publishable key; RLS limits it to published rows. */
 function publicClient() {
@@ -53,6 +54,7 @@ export const getPublicSite = createServerFn({ method: "GET" }).handler(
       const row = content.data?.find((r) => r.section === key);
       (sections as Record<string, unknown>)[key] = mergeSection(key, row?.data);
     }
+    sections.contact = publicContact(sections.contact);
 
     const ids = referencedMediaIds(sections);
     const media: Record<string, MediaItem> = {};
