@@ -50,6 +50,8 @@ Admin: `/admin` (sign in at `/auth`, password reset at `/reset-password`).
   storage policy). Only admins can read the bucket directly. The site serves images via
   `/api/public/media/<file>`, which reads them server-side and only serves files registered in the
   media library. (Public buckets are blocked by your workspace policy; this route works without them.)
+- Image library details (file names, descriptions, sizes) are readable by visitors only for images used
+  in published content (logo, home image, about image); admins can read the whole library.
 - No service-role key is used in browser code. The only privileged server code is the enquiry insert
   in `src/lib/enquiry.functions.ts` and the media route, both loading it inside the handler.
 

@@ -17,6 +17,7 @@
 - Contact details pass through `publicContact` before publishing and in `getPublicSite`, so unverified values never reach visitors or page source.
 - Admin writes use the browser client under RLS (`has_role(auth.uid(),'admin')`); the service-role client is used only for enquiry inserts (rate limiting) and the media route, loaded inside the handler.
 - Images are in the private `site-media` bucket (storage reads are admin-only) and served by `/api/public/media/$file`, which only serves flat `<uuid>.<ext>` names registered in `media`, because the workspace blocks public buckets.
+- Visitors can read `media` rows only when a published `site_content` row references them via `logo_id`, `hero_image_id` or `image_id`; when adding a new image field, add its key to that policy and to `referencedMediaIds`.
 - The first auth user ever created is made admin by a trigger; later sign-ups get no role, so never grant roles from client code or user metadata.
 - Business rules (validation, spam limits, contact visibility, upload limits) live in plain modules under `src/lib` and are covered by `src/test/business-rules.test.ts`.
 - Operator documentation lives in `docs/OPERATIONS.md`; update it when setup, security or deployment steps change.
