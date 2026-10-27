@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_authenticated/admin/enquiries")({
   component: EnquiriesAdmin,
 });
 
-export async function fetchEnquiries() {
+async function fetchEnquiries() {
   const { data, error } = await supabase
     .from("enquiries")
     .select("id, name, business_name, email, phone, service, message, status, created_at")
