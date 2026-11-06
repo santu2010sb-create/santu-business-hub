@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Check, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -7,13 +7,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import heroFallback from "@/assets/hero-desk.jpg";
-import { mediaUrl, paragraphs, type Service, type SiteData } from "@/lib/content";
+import founderFallback from "@/assets/founder-santu.webp";
+import brandLogo from "@/assets/santu-logo.webp";
+import { cn } from "@/lib/utils";
+import { mediaUrl, paragraphs, pricePlans, rows, type Service, type SiteData } from "@/lib/content";
 import { telLink, visibleContact, whatsappLink } from "@/lib/contact";
 import { serviceIcon } from "@/lib/service-icons";
 import { EnquiryForm } from "./EnquiryForm";
-
-const FALLBACK_HERO_ALT = "A tidy office desk with neatly stacked documents and a laptop";
 
 function sectionImage(site: SiteData, id: string | null) {
   const m = id ? site.media[id] : undefined;
@@ -326,7 +326,7 @@ export function HomePage({ site }: { site: SiteData }) {
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="eyebrow text-teal">Services</p>
-              <h2 className="mt-2 text-3xl font-extrabold text-navy md:text-4xl">{h.services_title}</h2>
+              <h2 className="mt-2 text-3xl font-extrabold text-navy md:text-5xl">{h.services_title}</h2>
               <p className="mt-3 max-w-xl text-muted-foreground">{h.services_intro}</p>
             </div>
             <Button asChild variant="outline">
@@ -347,6 +347,24 @@ export function HomePage({ site }: { site: SiteData }) {
         </div>
       </section>
 
+      {steps.length > 0 && (
+        <section className="container-page py-16 md:py-24">
+          <SectionHead eyebrow="How it works" title={h.process_title} />
+          <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map(([t = "", d = ""], i) => (
+              <li key={i}>
+                <span className="font-mono text-xs tracking-[0.14em] text-teal">STEP {i + 1}</span>
+                <div className="my-3 h-1 rounded-full bg-gradient-to-r from-teal to-gold" aria-hidden />
+                <h3 className="text-lg font-bold text-navy">{t}</h3>
+                <p className="mt-1 text-muted-foreground">{d}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <Pricing site={site} />
+
       <CtaBand site={site} />
     </>
   );
@@ -356,8 +374,9 @@ function CtaBand({ site }: { site: SiteData }) {
   const h = site.home;
   return (
     <section className="container-page py-16 md:py-24">
-      <div className="flex flex-col items-start gap-6 rounded-3xl bg-navy p-8 text-navy-foreground shadow-card md:flex-row md:items-center md:justify-between md:p-12">
-        <div className="max-w-2xl">
+      <div className="relative flex flex-col items-start gap-6 overflow-hidden rounded-3xl bg-hero p-8 text-navy-foreground shadow-card md:flex-row md:items-center md:justify-between md:p-12">
+        <img src={brandLogo} alt="" width={96} height={96} loading="lazy" className="size-20 rounded-full md:size-24" />
+        <div className="max-w-2xl md:flex-1">
           <h2 className="text-3xl font-extrabold md:text-4xl">{h.cta_title}</h2>
           <p className="mt-3 text-navy-muted">{h.cta_body}</p>
         </div>
