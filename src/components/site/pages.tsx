@@ -57,50 +57,269 @@ function ServiceCard({ service }: { service: Service }) {
   );
 }
 
+/** Highlight the last two words of the headline in gold, like the brand design. */
+function HeroTitle({ text }: { text: string }) {
+  const words = text.trim().split(/\s+/);
+  if (words.length < 4) return <>{text}</>;
+  const tail = words.slice(-2).join(" ");
+  return (
+    <>
+      {words.slice(0, -2).join(" ")}{" "}
+      <em className="rounded-[0.12em] bg-gold px-[0.15em] not-italic text-gold-foreground [box-decoration-break:clone]">
+        {tail}
+      </em>
+    </>
+  );
+}
+
+function WorkSlip({ site }: { site: SiteData }) {
+  const items = rows(site.home.slip_items);
+  if (items.length === 0) return null;
+  return (
+    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-card sm:rotate-1">
+      <div className="flex justify-between gap-3 bg-navy px-5 py-3.5 font-mono text-[0.72rem] uppercase tracking-[0.12em] text-navy-foreground">
+        <span>Work slip</span>
+        <span>{site.branding.location.split(",")[0]}</span>
+      </div>
+      <ul className="px-5 pb-3 pt-1">
+        {items.map(([task, code = ""], i) => (
+          <li
+            key={i}
+            className="grid grid-cols-[26px_1fr_auto] items-center gap-3 border-b border-dashed border-border py-3 text-[0.98rem] last:border-0"
+          >
+            <span className="grid size-[22px] place-items-center rounded-md bg-teal text-navy-foreground">
+              <Check
+                className="size-3.5 animate-tick"
+                strokeWidth={3}
+                style={{ animationDelay: `${400 + i * 350}ms` }}
+                aria-hidden
+              />
+            </span>
+            <span className="text-muted-foreground line-through decoration-teal">{task}</span>
+            <span className="font-mono text-[0.7rem] tracking-[0.08em] text-muted-foreground">{code}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="flex justify-between gap-3 border-t border-border px-5 py-3 font-mono text-[0.78rem] text-muted-foreground">
+        <span>{items.length} tasks</span>
+        <span className="text-teal">Handed off ✓</span>
+      </div>
+    </div>
+  );
+}
+
+function SectionHead({ eyebrow, title, intro }: { eyebrow: string; title: string; intro?: string }) {
+  return (
+    <div className="max-w-2xl">
+      <p className="eyebrow text-teal">{eyebrow}</p>
+      <h2 className="mt-3 text-3xl font-extrabold text-navy md:text-5xl">{title}</h2>
+      {intro && <p className="mt-4 text-lg text-muted-foreground">{intro}</p>}
+    </div>
+  );
+}
+
+function Pricing({ site }: { site: SiteData }) {
+  const h = site.home;
+  const plans = pricePlans(h.pricing_monthly);
+  const creative = rows(h.pricing_creative);
+  if (plans.length === 0 && creative.length === 0) return null;
+  return (
+    <section className="container-page py-16 md:py-24">
+      <SectionHead eyebrow="Pricing" title={h.pricing_title} intro={h.pricing_intro} />
+      {plans.length > 0 && (
+        <>
+          <h3 className="mt-10 text-lg font-bold text-navy">Monthly back-office support</h3>
+          <div className="mt-4 grid gap-5 md:grid-cols-3">
+            {plans.map((p) => (
+              <article
+                key={p.name}
+                className={cn(
+                  "relative flex flex-col rounded-2xl border bg-card p-6 shadow-soft",
+                  p.featured ? "border-gold ring-2 ring-gold/40" : "border-border",
+                )}
+              >
+                {p.featured && (
+                  <span className="absolute -top-3 left-6 rounded-full bg-gold px-3 py-1 font-mono text-[0.7rem] uppercase tracking-wider text-gold-foreground">
+                    Most chosen
+                  </span>
+                )}
+                <h4 className="font-display text-xl font-bold text-navy">{p.name}</h4>
+                <p className="mt-3">
+                  <span className="font-display text-4xl font-extrabold text-navy">{p.amount}</span>{" "}
+                  <span className="text-muted-foreground">{p.per}</span>
+                </p>
+                {p.hours && <p className="mt-1 font-mono text-sm text-teal">{p.hours}</p>}
+                <ul className="mt-5 space-y-2 text-[0.95rem] text-muted-foreground">
+                  {p.points.map((pt) => (
+                    <li key={pt} className="flex gap-2">
+                      <Check className="mt-1 size-4 shrink-0 text-teal" aria-hidden /> {pt}
+                    </li>
+                  ))}
+                </ul>
+                <Button asChild variant={p.featured ? "teal" : "outline"} className="mt-6 rounded-full">
+                  <Link to="/contact">Ask for this</Link>
+                </Button>
+              </article>
+            ))}
+          </div>
+          {h.pricing_note && <p className="mt-4 text-sm text-muted-foreground">{h.pricing_note}</p>}
+        </>
+      )}
+      {creative.length > 0 && (
+        <>
+          <h3 className="mt-12 text-lg font-bold text-navy">Creative work, starting from</h3>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {creative.map(([name = "", amount = "", unit = ""]) => (
+              <div key={name} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+                <p className="font-semibold text-navy">{name}</p>
+                <p className="mt-2">
+                  <span className="font-display text-2xl font-extrabold text-navy">{amount}</span>{" "}
+                  <span className="text-sm text-muted-foreground">{unit}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
 export function HomePage({ site }: { site: SiteData }) {
   const h = site.home;
-  const img = sectionImage(site, h.hero_image_id) ?? { src: heroFallback, alt: FALLBACK_HERO_ALT };
+  const custom = sectionImage(site, h.hero_image_id);
+  const founderImg = sectionImage(site, h.founder_image_id) ?? {
+    src: founderFallback,
+    alt: `${h.founder_name}, ${h.founder_role}`,
+  };
+  const facts = rows(h.facts);
+  const why = rows(h.why_points);
+  const steps = rows(h.process_steps);
+  const values = h.founder_values.split(",").map((v) => v.trim()).filter(Boolean);
 
   return (
     <>
-      <section className="bg-hero text-navy-foreground">
-        <div className="container-page grid items-center gap-10 py-14 md:grid-cols-[1.1fr_1fr] md:py-24">
+      <section className="relative isolate overflow-hidden">
+        <div className="absolute inset-0 -z-10 bg-light-glow" aria-hidden />
+        <div className="container-page grid items-center gap-12 py-14 md:grid-cols-[1.1fr_0.9fr] md:py-20">
           <div className="animate-rise">
             <p className="eyebrow text-teal">{h.hero_eyebrow}</p>
-            <h1 className="mt-4 text-[2.5rem] font-medium leading-[1.05] font-extrabold sm:text-5xl lg:text-6xl">{h.hero_title}</h1>
-            <p className="mt-6 max-w-xl text-lg text-navy-muted">{h.hero_subtitle}</p>
+            <h1 className="mt-4 text-[2.6rem] leading-[1.05] text-navy sm:text-6xl lg:text-7xl">
+              <HeroTitle text={h.hero_title} />
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-muted-foreground">{h.hero_subtitle}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="teal" size="lg">
                 <Link to="/contact">
                   {h.primary_cta_label} <ArrowRight />
                 </Link>
               </Button>
-              <Button asChild variant="on-navy" size="lg">
+              <Button asChild variant="outline" size="lg" className="rounded-full">
                 <Link to="/services">{h.secondary_cta_label}</Link>
               </Button>
             </div>
-            <p className="mt-8 flex items-center gap-2 text-sm text-navy-muted">
+            <p className="mt-8 flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="size-4 text-teal" aria-hidden /> {site.branding.location}
             </p>
           </div>
-          <div className="relative animate-rise [animation-delay:120ms]">
-            <div className="absolute -inset-3 -z-0 rounded-[1.75rem] bg-teal/15 blur-2xl" aria-hidden />
-            <img
-              src={img.src}
-              alt={img.alt}
-              width={1600}
-              height={1072}
-              fetchPriority="high"
-              className="relative aspect-[4/3] w-full rounded-3xl object-cover shadow-card"
-            />
+          <div className="animate-rise [animation-delay:120ms]">
+            {custom ? (
+              <img
+                src={custom.src}
+                alt={custom.alt}
+                fetchPriority="high"
+                className="aspect-[4/3] w-full rounded-3xl object-cover shadow-card"
+              />
+            ) : (
+              <WorkSlip site={site} />
+            )}
           </div>
+        </div>
+        <div className="flex justify-center pb-4">
+          <span className="bg-gold px-8 py-2.5 font-display text-sm font-bold uppercase tracking-[0.08em] text-gold-foreground [clip-path:polygon(0_0,100%_0,96%_50%,100%_100%,0_100%,4%_50%)] md:text-base">
+            {site.branding.tagline}
+          </span>
         </div>
       </section>
 
-      <section className="container-page grid gap-6 py-16 md:grid-cols-[1fr_1.4fr] md:py-24">
-        <h2 className="text-3xl font-extrabold text-navy md:text-4xl">{h.intro_title}</h2>
-        <p className="prose-copy">{h.intro_body}</p>
+      {facts.length > 0 && (
+        <section className="container-page mt-8">
+          <dl className="grid grid-cols-2 border-y border-border md:grid-cols-4">
+            {facts.map(([n = "", label = ""], i) => (
+              <div key={i} className="border-border px-4 py-6 [&:nth-child(n+3)]:border-t md:[&:nth-child(n+3)]:border-t-0 md:[&:not(:first-child)]:border-l">
+                <dt className="font-display text-3xl font-extrabold text-navy">{n}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{label}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
+
+      <section className="container-page grid gap-10 py-16 md:grid-cols-2 md:py-24">
+        <SectionHead eyebrow="Why us" title={h.intro_title} intro={h.intro_body} />
+        {why.length > 0 && (
+          <ul className="space-y-5">
+            {why.map(([t = "", d = ""], i) => (
+              <li key={i} className="flex gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft">
+                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent text-teal">
+                  <Check className="size-4" strokeWidth={3} aria-hidden />
+                </span>
+                <span>
+                  <h3 className="text-lg font-bold text-navy">{t}</h3>
+                  <p className="mt-1 text-muted-foreground">{d}</p>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
+
+      {h.founder_name && (
+        <section className="container-page pb-16 md:pb-24">
+          <div className="grid items-center gap-10 rounded-3xl border border-border bg-card p-6 shadow-card md:grid-cols-[0.8fr_1.2fr] md:p-10">
+            <div className="relative">
+              <div className="absolute -inset-3 rounded-[2rem] bg-light-glow" aria-hidden />
+              <img
+                src={founderImg.src}
+                alt={founderImg.alt}
+                width={600}
+                height={750}
+                loading="lazy"
+                className="relative mx-auto aspect-[4/5] w-full max-w-sm rounded-3xl bg-accent object-cover"
+              />
+              <span className="absolute bottom-4 left-4 rounded-full bg-gold px-3 py-1 font-mono text-xs uppercase tracking-wider text-gold-foreground">
+                Founder
+              </span>
+            </div>
+            <div>
+              <p className="eyebrow text-teal">About us</p>
+              <h2 className="mt-3 text-3xl font-extrabold text-navy md:text-4xl">{h.founder_name}</h2>
+              <p className="mt-1 font-mono text-sm text-muted-foreground">{h.founder_role}</p>
+              <div className="mt-5 space-y-4">
+                {paragraphs(h.founder_body).map((p, i) => (
+                  <p key={i} className="prose-copy">
+                    {p}
+                  </p>
+                ))}
+              </div>
+              {h.founder_quote && (
+                <blockquote className="mt-6 border-l-4 border-gold pl-4 font-display text-xl font-bold text-navy">
+                  “{h.founder_quote}”
+                </blockquote>
+              )}
+              {values.length > 0 && (
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {values.map((v) => (
+                    <li key={v} className="flex items-center gap-1.5 rounded-full bg-accent px-3 py-1.5 text-sm font-semibold text-teal">
+                      <Check className="size-4" aria-hidden /> {v}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="bg-muted/60 py-16 md:py-24">
         <div className="container-page">
