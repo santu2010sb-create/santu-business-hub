@@ -9,6 +9,10 @@ import {
   Mail,
   MonitorSmartphone,
   Puzzle,
+  Globe,
+  Image,
+  Video,
+  Music,
   type LucideIcon,
 } from "lucide-react";
 
@@ -23,6 +27,10 @@ export const SERVICE_ICONS: Record<string, { label: string; icon: LucideIcon }> 
   folder: { label: "Folder", icon: FolderOpen },
   mail: { label: "Mail", icon: Mail },
   calculator: { label: "Calculator", icon: Calculator },
+  globe: { label: "Website", icon: Globe },
+  poster: { label: "Poster", icon: Image },
+  video: { label: "Video", icon: Video },
+  audio: { label: "Audio", icon: Music },
 };
 
 export function serviceIcon(key: string): LucideIcon {

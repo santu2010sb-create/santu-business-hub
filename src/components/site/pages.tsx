@@ -33,8 +33,8 @@ export function PageIntro({ eyebrow, title, intro }: { eyebrow: string; title: s
   return (
     <section className="bg-hero text-navy-foreground">
       <div className="container-page py-14 md:py-20">
-        <p className="eyebrow text-teal">{eyebrow}</p>
-        <h1 className="mt-3 max-w-3xl text-4xl font-medium md:text-5xl">{title}</h1>
+        <p className="eyebrow text-gold">{eyebrow}</p>
+        <h1 className="mt-3 max-w-3xl text-4xl font-extrabold md:text-5xl">{title}</h1>
         {intro && <p className="mt-4 max-w-2xl text-lg text-navy-muted">{intro}</p>}
       </div>
     </section>
@@ -48,7 +48,7 @@ function ServiceCard({ service }: { service: Service }) {
       <span className="grid size-12 place-items-center rounded-xl bg-accent text-accent-foreground">
         <Icon className="size-6" aria-hidden />
       </span>
-      <h3 className="mt-5 text-xl font-medium text-navy">
+      <h3 className="mt-5 text-xl font-extrabold text-navy">
         {service.title}
         <UnpublishedBadge published={service.published} />
       </h3>
@@ -67,7 +67,7 @@ export function HomePage({ site }: { site: SiteData }) {
         <div className="container-page grid items-center gap-10 py-14 md:grid-cols-[1.1fr_1fr] md:py-24">
           <div className="animate-rise">
             <p className="eyebrow text-teal">{h.hero_eyebrow}</p>
-            <h1 className="mt-4 text-[2.5rem] font-medium leading-[1.05] sm:text-5xl lg:text-6xl">{h.hero_title}</h1>
+            <h1 className="mt-4 text-[2.5rem] font-medium leading-[1.05] font-extrabold sm:text-5xl lg:text-6xl">{h.hero_title}</h1>
             <p className="mt-6 max-w-xl text-lg text-navy-muted">{h.hero_subtitle}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="teal" size="lg">
@@ -98,7 +98,7 @@ export function HomePage({ site }: { site: SiteData }) {
       </section>
 
       <section className="container-page grid gap-6 py-16 md:grid-cols-[1fr_1.4fr] md:py-24">
-        <h2 className="text-3xl font-medium text-navy md:text-4xl">{h.intro_title}</h2>
+        <h2 className="text-3xl font-extrabold text-navy md:text-4xl">{h.intro_title}</h2>
         <p className="prose-copy">{h.intro_body}</p>
       </section>
 
@@ -107,7 +107,7 @@ export function HomePage({ site }: { site: SiteData }) {
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="eyebrow text-teal">Services</p>
-              <h2 className="mt-2 text-3xl font-medium text-navy md:text-4xl">{h.services_title}</h2>
+              <h2 className="mt-2 text-3xl font-extrabold text-navy md:text-4xl">{h.services_title}</h2>
               <p className="mt-3 max-w-xl text-muted-foreground">{h.services_intro}</p>
             </div>
             <Button asChild variant="outline">
@@ -139,7 +139,7 @@ function CtaBand({ site }: { site: SiteData }) {
     <section className="container-page py-16 md:py-24">
       <div className="flex flex-col items-start gap-6 rounded-3xl bg-navy p-8 text-navy-foreground shadow-card md:flex-row md:items-center md:justify-between md:p-12">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-medium md:text-4xl">{h.cta_title}</h2>
+          <h2 className="text-3xl font-extrabold md:text-4xl">{h.cta_title}</h2>
           <p className="mt-3 text-navy-muted">{h.cta_body}</p>
         </div>
         <Button asChild variant="teal" size="lg">
@@ -169,7 +169,7 @@ export function ServicesPage({ site }: { site: SiteData }) {
                     <Icon className="size-6" aria-hidden />
                   </span>
                   <div>
-                    <h2 className="text-xl font-medium text-navy">
+                    <h2 className="text-xl font-extrabold text-navy">
                       {s.title}
                       <UnpublishedBadge published={s.published} />
                     </h2>
@@ -216,7 +216,7 @@ export function AboutPage({ site }: { site: SiteData }) {
           )}
           {(a.focus_title || a.focus_body) && (
             <div className="rounded-2xl border border-border bg-accent/60 p-6">
-              <h2 className="text-2xl font-medium text-navy">{a.focus_title}</h2>
+              <h2 className="text-2xl font-extrabold text-navy">{a.focus_title}</h2>
               <p className="mt-2 text-accent-foreground">{a.focus_body}</p>
             </div>
           )}
@@ -282,7 +282,7 @@ export function ContactPage({ site, preview = false }: { site: SiteData; preview
       <PageIntro eyebrow="Contact" title="Let's talk about your business" intro={c.intro} />
       <section className="container-page grid gap-10 py-14 md:grid-cols-[1fr_1.5fr] md:py-20">
         <aside className="space-y-4">
-          <h2 className="text-2xl font-medium text-navy">Contact details</h2>
+          <h2 className="text-2xl font-extrabold text-navy">Contact details</h2>
           <ul className="space-y-4 text-[0.98rem]">
             <li className="flex gap-3">
               <MapPin className="mt-1 size-5 shrink-0 text-teal" aria-hidden />
@@ -291,7 +291,7 @@ export function ContactPage({ site, preview = false }: { site: SiteData; preview
             {email && (
               <li className="flex gap-3">
                 <Mail className="mt-1 size-5 shrink-0 text-teal" aria-hidden />
-                <a href={`mailto:${email}`} className="break-all font-medium text-navy hover:text-teal">
+                <a href={`mailto:${email}`} className="break-all font-extrabold text-navy hover:text-teal">
                   {email}
                 </a>
               </li>
@@ -299,7 +299,7 @@ export function ContactPage({ site, preview = false }: { site: SiteData; preview
             {phone && (
               <li className="flex gap-3">
                 <Phone className="mt-1 size-5 shrink-0 text-teal" aria-hidden />
-                <a href={telLink(phone)} className="font-medium text-navy hover:text-teal">
+                <a href={telLink(phone)} className="font-extrabold text-navy hover:text-teal">
                   {phone}
                 </a>
               </li>
@@ -319,7 +319,7 @@ export function ContactPage({ site, preview = false }: { site: SiteData; preview
           )}
         </aside>
         <div className="rounded-3xl border border-border bg-card p-6 shadow-card md:p-8">
-          <h2 className="text-2xl font-medium text-navy">Send an enquiry</h2>
+          <h2 className="text-2xl font-extrabold text-navy">Send an enquiry</h2>
           <p className="mt-1 text-sm text-muted-foreground">Fields marked * are required.</p>
           <EnquiryForm services={site.services} disabled={preview} />
         </div>
