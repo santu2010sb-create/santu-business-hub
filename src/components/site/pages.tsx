@@ -236,7 +236,7 @@ export function HomePage({ site }: { site: SiteData }) {
           </div>
         </div>
         <div className="flex justify-center pb-4">
-          <span className="bg-gold px-8 py-2.5 font-display text-sm font-bold uppercase tracking-[0.08em] text-gold-foreground [clip-path:polygon(0_0,100%_0,96%_50%,100%_100%,0_100%,4%_50%)] md:text-base">
+          <span className="bg-gold px-8 py-2.5 font-display text-[0.7rem] font-bold whitespace-nowrap sm:text-sm uppercase tracking-[0.08em] text-gold-foreground [clip-path:polygon(0_0,100%_0,96%_50%,100%_100%,0_100%,4%_50%)] md:text-base">
             {site.branding.tagline}
           </span>
         </div>
