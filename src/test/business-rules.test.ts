@@ -92,3 +92,16 @@ describe("published contact data", () => {
     expect(pub.phone.value).toBe("+91 98300 00000");
   });
 });
+
+describe("pricing lines", () => {
+  it("parses plans and marks the * plan as highlighted", async () => {
+    const { pricePlans } = await import("@/lib/content");
+    const [a, b] = pricePlans("Starter | ₹2,999 | / month | 20 hours a month | A; B\n*Growth | ₹5,999 | / month | 50 hours | C");
+    expect(a).toMatchObject({ name: "Starter", amount: "₹2,999", featured: false, points: ["A", "B"] });
+    expect(b).toMatchObject({ name: "Growth", featured: true });
+  });
+  it("defaults include the owner's ₹2,999 starter plan", async () => {
+    const { pricePlans } = await import("@/lib/content");
+    expect(pricePlans(DEFAULT_CONTENT.home.pricing_monthly)[0]?.amount).toBe("₹2,999");
+  });
+});

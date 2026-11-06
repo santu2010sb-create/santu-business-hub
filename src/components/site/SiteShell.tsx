@@ -103,6 +103,18 @@ export function SiteShell({
       </main>
 
       <SiteFooter site={site} />
+      {visibleContact(site.contact, "whatsapp") && (
+        <a
+          href={whatsappLink(visibleContact(site.contact, "whatsapp")!)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat on WhatsApp"
+          className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-teal px-4 py-3 font-semibold text-navy-foreground shadow-card transition-transform hover:-translate-y-0.5"
+        >
+          <MessageCircle className="size-5" aria-hidden />
+          <span className="hidden sm:inline">Chat on WhatsApp</span>
+        </a>
+      )}
     </div>
   );
 }
