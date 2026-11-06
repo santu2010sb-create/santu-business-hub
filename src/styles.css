@@ -6,13 +6,14 @@
 
 /*
  * SANTU BUSINESS SERVICES design system.
- * Premium navy + white with a restrained teal accent.
+ * Deep green + white with gold accents, taken from the logo.
  * All colours are oklch tokens; components use semantic classes only.
  */
 
 @theme inline {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, Menlo, monospace;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -51,6 +52,8 @@
   --color-navy-muted: var(--navy-muted);
   --color-teal: var(--teal);
   --color-teal-soft: var(--teal-soft);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -71,39 +74,43 @@
 :root {
   --radius: 0.75rem;
 
-  --navy: oklch(0.27 0.075 258);
-  --navy-deep: oklch(0.2 0.055 260);
-  --navy-foreground: oklch(0.97 0.01 240);
-  --navy-muted: oklch(0.78 0.03 245);
-  --teal: oklch(0.64 0.1 192);
-  --teal-soft: oklch(0.95 0.03 190);
+  --navy: #0e3b25;
+  --navy-deep: #0a2c1b;
+  --navy-foreground: #eaf4ec;
+  --navy-muted: #b4cbbb;
+  --teal: #1b7a47;
+  --teal-soft: #e0f0e5;
+  --gold: #d4a12a;
+  --gold-foreground: #2a1d00;
 
-  --background: oklch(0.992 0.003 240);
-  --foreground: oklch(0.22 0.04 258);
+  --background: #f4f7f4;
+  --foreground: #0e3b25;
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.04 258);
+  --card-foreground: #0e3b25;
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.04 258);
+  --popover-foreground: #0e3b25;
   --primary: var(--navy);
   --primary-foreground: oklch(0.985 0.005 240);
   --secondary: oklch(0.955 0.012 245);
   --secondary-foreground: oklch(0.27 0.075 258);
-  --muted: oklch(0.965 0.008 245);
-  --muted-foreground: oklch(0.48 0.03 255);
+  --muted: #e9efea;
+  --muted-foreground: #53655a;
   --accent: var(--teal-soft);
-  --accent-foreground: oklch(0.36 0.07 200);
+  --accent-foreground: #1b7a47;
   --destructive: oklch(0.56 0.21 27);
   --destructive-foreground: oklch(0.985 0.005 240);
   --success: oklch(0.55 0.12 160);
   --success-foreground: oklch(0.985 0.005 240);
   --warning: oklch(0.78 0.14 75);
   --warning-foreground: oklch(0.3 0.06 60);
-  --border: oklch(0.91 0.012 248);
-  --input: oklch(0.88 0.015 248);
+  --border: #d9e2db;
+  --input: #c9d6cc;
   --ring: var(--teal);
 
-  --gradient-hero: radial-gradient(120% 90% at 85% 0%, oklch(0.36 0.09 230 / 0.9) 0%, transparent 55%),
-    linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+  --gradient-hero: radial-gradient(380px 380px at 100% 0%, color-mix(in srgb, var(--gold) 28%, transparent), transparent 70%),
+    linear-gradient(120deg, #0b3a24, #14593a 55%, var(--navy));
+  --gradient-light: radial-gradient(520px 360px at 82% 18%, color-mix(in srgb, var(--gold) 24%, transparent), transparent 70%),
+    radial-gradient(620px 420px at 8% 30%, color-mix(in srgb, var(--teal) 14%, transparent), transparent 70%);
   --shadow-soft: 0 1px 2px oklch(0.22 0.04 258 / 0.06), 0 8px 24px -12px oklch(0.22 0.04 258 / 0.18);
   --shadow-card: 0 1px 1px oklch(0.22 0.04 258 / 0.04), 0 20px 40px -24px oklch(0.22 0.04 258 / 0.3);
 
@@ -145,8 +152,10 @@
   h3 {
     font-family: var(--font-display);
     font-optical-sizing: auto;
-    letter-spacing: -0.015em;
-    line-height: 1.12;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    font-weight: 800;
+    text-wrap: balance;
   }
 
   :focus-visible {
@@ -169,11 +178,19 @@
   background: var(--gradient-hero);
 }
 
+@utility bg-light-glow {
+  background: var(--gradient-light);
+}
+
+@utility font-mono {
+  font-family: var(--font-mono);
+}
+
 @utility eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -205,4 +222,13 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+@keyframes tick-in {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@utility animate-tick {
+  animation: tick-in 0.4s ease-out both;
 }

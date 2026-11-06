@@ -26,6 +26,22 @@ export type HomeContent = {
   cta_title: string;
   cta_body: string;
   cta_label: string;
+  slip_items: string;
+  facts: string;
+  why_points: string;
+  founder_name: string;
+  founder_role: string;
+  founder_body: string;
+  founder_quote: string;
+  founder_values: string;
+  founder_image_id: string | null;
+  process_title: string;
+  process_steps: string;
+  pricing_title: string;
+  pricing_intro: string;
+  pricing_monthly: string;
+  pricing_note: string;
+  pricing_creative: string;
 };
 
 export type AboutContent = {
@@ -88,6 +104,30 @@ export const DEFAULT_CONTENT: SectionMap = {
     cta_body:
       "Tell us about the tasks taking up your time, and we will get back to you to talk through how we can help.",
     cta_label: "Contact us",
+    slip_items:
+      "Reply to customer emails | ADMIN\nEnter this month's invoices | DATA\nFormat the client proposal | DOCS\nUpdate online business listing | DIGITAL\nDesign the festival offer poster | DESIGN",
+    facts:
+      "10 | services under one roof\n6 | back-office tasks we take off your desk\n4 | creative services: web, poster, video, audio\n1 | team for both admin and creative work",
+    why_points:
+      "Built for small businesses | Support sized for owners and small teams, not big departments.\nAdmin and data, done carefully | Accurate records, organised files and tidy documents you can find later.\nCreative work under one roof | Websites, posters, video ads and audio from the same team.\nTell us what you need | If a task is not on the list, describe it and we will discuss options.",
+    founder_name: "Santu Narayan Bose",
+    founder_role: "Founder, Santu Business Services",
+    founder_body:
+      "I am Santu Narayan Bose, Founder of Santu Business Services, dedicated to helping businesses grow through reliable back-office and digital support services.\n\nWith a commitment to professionalism, transparency and personalised service, I aim to simplify everyday business operations.",
+    founder_quote: "Your business deserves dependable support, honest service and a partner you can trust.",
+    founder_values: "Professionalism, Transparency, Personalised service",
+    founder_image_id: null,
+    process_title: "From first message to handed-off",
+    process_steps:
+      "Describe the tasks | Tell us which tasks are eating your time. Rough notes are fine.\nWe get back to you | We discuss what support fits and how we would handle it.\nAgree the scope | You confirm what is included before work begins.\nWe take it on | Work is done and delivered while you get back to your customers.",
+    pricing_title: "Simple prices, agreed before we start",
+    pricing_intro:
+      "These are starting points. We confirm the final price in writing after we agree the scope with you.",
+    pricing_monthly:
+      "Starter | ₹2,999 | / month | 20 hours a month | Admin and email support; Data entry and documents; Hours can be split across tasks\n*Growth | ₹5,999 | / month | 50 hours a month | Everything in Starter; Billing, invoices and reports; A better rate per hour\nBusiness | ₹9,999 | / month | 100 hours a month | Everything in Growth; Back-office operations and customer support; The best rate per hour",
+    pricing_note: "Need fewer hours, or just a one-off task? Ask for a per-task quote.",
+    pricing_creative:
+      "Poster or social creative | ₹200 | per design\nWebsite, up to 5 pages | ₹3,999 | one time\nVideo advertisement | ₹999 | short video\nAudio jingle | ₹999 | per jingle",
   },
   about: {
     title: "About SANTU BUSINESS SERVICES",
@@ -177,9 +217,37 @@ export function mediaUrl(path: string): string {
 
 /** Collect every media id referenced by sections, so only those rows are loaded. */
 export function referencedMediaIds(sections: SectionMap): string[] {
-  return [sections.branding.logo_id, sections.home.hero_image_id, sections.about.image_id].filter(
+  return [
+    sections.branding.logo_id,
+    sections.home.hero_image_id,
+    sections.home.founder_image_id,
+    sections.about.image_id,
+  ].filter(
     (v): v is string => !!v,
   );
+}
+
+/** Split "a | b | c" lines into trimmed cell arrays, skipping blank lines. */
+export function rows(text: string): string[][] {
+  return text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((l) => l.split("|").map((c) => c.trim()));
+}
+
+export type PricePlan = { name: string; amount: string; per: string; hours: string; points: string[]; featured: boolean };
+
+/** Parse pricing lines; a leading "*" marks the highlighted plan. */
+export function pricePlans(text: string): PricePlan[] {
+  return rows(text).map(([name = "", amount = "", per = "", hours = "", points = ""]) => ({
+    name: name.replace(/^\*/, "").trim(),
+    featured: name.startsWith("*"),
+    amount,
+    per,
+    hours,
+    points: points.split(";").map((p) => p.trim()).filter(Boolean),
+  }));
 }
 
 /** Split long-form text into paragraphs on blank lines. */

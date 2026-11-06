@@ -103,6 +103,18 @@ export function SiteShell({
       </main>
 
       <SiteFooter site={site} />
+      {visibleContact(site.contact, "whatsapp") && (
+        <a
+          href={whatsappLink(visibleContact(site.contact, "whatsapp")!)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat on WhatsApp"
+          className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-teal px-4 py-3 font-semibold text-navy-foreground shadow-card transition-transform hover:-translate-y-0.5"
+        >
+          <MessageCircle className="size-5" aria-hidden />
+          <span className="hidden sm:inline">Chat on WhatsApp</span>
+        </a>
+      )}
     </div>
   );
 }
@@ -122,14 +134,14 @@ function SiteFooter({ site }: { site: SiteData }) {
         <div className="space-y-4">
           <Logo site={site} inverted />
           <p className="max-w-sm text-sm text-navy-muted">{site.footer.blurb}</p>
-          <p className="eyebrow text-teal">{site.branding.tagline}</p>
+          <p className="eyebrow text-gold">{site.branding.tagline}</p>
         </div>
         <div>
           <h2 className="eyebrow mb-4 text-navy-muted">Explore</h2>
           <ul className="space-y-2 text-sm">
             {NAV.map((item) => (
               <li key={item.to}>
-                <Link to={item.to} className="text-navy-foreground/90 hover:text-teal">
+                <Link to={item.to} className="text-navy-foreground/90 hover:text-gold">
                   {item.label}
                 </Link>
               </li>
@@ -140,35 +152,35 @@ function SiteFooter({ site }: { site: SiteData }) {
           <h2 className="eyebrow mb-4 text-navy-muted">Get in touch</h2>
           <ul className="space-y-3 text-sm">
             <li className="flex gap-2">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-teal" aria-hidden />
+              <MapPin className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden />
               <span>{address ?? site.branding.location}</span>
             </li>
             {email && (
               <li className="flex gap-2">
-                <Mail className="mt-0.5 size-4 shrink-0 text-teal" aria-hidden />
-                <a href={`mailto:${email}`} className="break-all hover:text-teal">
+                <Mail className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden />
+                <a href={`mailto:${email}`} className="break-all hover:text-gold">
                   {email}
                 </a>
               </li>
             )}
             {phone && (
               <li className="flex gap-2">
-                <Phone className="mt-0.5 size-4 shrink-0 text-teal" aria-hidden />
-                <a href={telLink(phone)} className="hover:text-teal">
+                <Phone className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden />
+                <a href={telLink(phone)} className="hover:text-gold">
                   {phone}
                 </a>
               </li>
             )}
             {whatsapp && (
               <li className="flex gap-2">
-                <MessageCircle className="mt-0.5 size-4 shrink-0 text-teal" aria-hidden />
-                <a href={whatsappLink(whatsapp)} target="_blank" rel="noopener noreferrer" className="hover:text-teal">
+                <MessageCircle className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden />
+                <a href={whatsappLink(whatsapp)} target="_blank" rel="noopener noreferrer" className="hover:text-gold">
                   WhatsApp
                 </a>
               </li>
             )}
             <li>
-              <Link to="/contact" className="font-semibold text-teal hover:underline">
+              <Link to="/contact" className="font-semibold text-gold hover:underline">
                 Send an enquiry →
               </Link>
             </li>
@@ -177,7 +189,7 @@ function SiteFooter({ site }: { site: SiteData }) {
             <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
               {socials.map((s) => (
                 <li key={s.key}>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-navy-muted hover:text-teal">
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-navy-muted hover:text-gold">
                     {SOCIAL_LABELS[s.key]}
                   </a>
                 </li>
@@ -191,10 +203,10 @@ function SiteFooter({ site }: { site: SiteData }) {
           <p>
             © {new Date().getFullYear()} {site.branding.business_name}. {site.footer.note}
           </p>
-<Link to="/privacy-policy" className="hover:text-teal">
+<Link to="/privacy-policy" className="hover:text-gold">
   Privacy Policy
 </Link>
-<Link to="/admin" className="hover:text-teal">
+<Link to="/admin" className="hover:text-gold">
   Staff login
 </Link>
         </div>

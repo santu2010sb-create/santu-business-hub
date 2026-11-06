@@ -1,0 +1,3 @@
+DROP POLICY "Published media is public" ON public.media;
+CREATE POLICY "Published media is public" ON public.media FOR SELECT TO anon, authenticated
+USING (EXISTS (SELECT 1 FROM public.site_content sc WHERE sc.status = 'published' AND (media.id::text = sc.data->>'logo_id' OR media.id::text = sc.data->>'hero_image_id' OR media.id::text = sc.data->>'image_id' OR media.id::text = sc.data->>'founder_image_id')));

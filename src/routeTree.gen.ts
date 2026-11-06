@@ -18,6 +18,7 @@ import { Route as SiteIndexRouteImport } from './routes/_site/index'
 import { Route as SiteAboutRouteImport } from './routes/_site/about'
 import { Route as SiteContactRouteImport } from './routes/_site/contact'
 import { Route as SiteFaqRouteImport } from './routes/_site/faq'
+import { Route as SitePrivacyPolicyRouteImport } from './routes/_site/privacy-policy'
 import { Route as SiteServicesRouteImport } from './routes/_site/services'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminContactRouteImport } from './routes/_authenticated/admin/contact'
@@ -70,6 +71,11 @@ const SiteContactRoute = SiteContactRouteImport.update({
 const SiteFaqRoute = SiteFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => SiteRouteRoute,
+} as any)
+const SitePrivacyPolicyRoute = SitePrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => SiteRouteRoute,
 } as any)
 const SiteServicesRoute = SiteServicesRouteImport.update({
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof SiteAboutRoute
   '/contact': typeof SiteContactRoute
   '/faq': typeof SiteFaqRoute
+  '/privacy-policy': typeof SitePrivacyPolicyRoute
   '/services': typeof SiteServicesRoute
   '/admin/contact': typeof AuthenticatedAdminContactRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/about': typeof SiteAboutRoute
   '/contact': typeof SiteContactRoute
   '/faq': typeof SiteFaqRoute
+  '/privacy-policy': typeof SitePrivacyPolicyRoute
   '/services': typeof SiteServicesRoute
   '/admin/contact': typeof AuthenticatedAdminContactRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/_site/about': typeof SiteAboutRoute
   '/_site/contact': typeof SiteContactRoute
   '/_site/faq': typeof SiteFaqRoute
+  '/_site/privacy-policy': typeof SitePrivacyPolicyRoute
   '/_site/services': typeof SiteServicesRoute
   '/_site/': typeof SiteIndexRoute
   '/_authenticated/admin/contact': typeof AuthenticatedAdminContactRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/faq'
+    | '/privacy-policy'
     | '/services'
     | '/admin/contact'
     | '/admin/content'
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/faq'
+    | '/privacy-policy'
     | '/services'
     | '/admin/contact'
     | '/admin/content'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/_site/about'
     | '/_site/contact'
     | '/_site/faq'
+    | '/_site/privacy-policy'
     | '/_site/services'
     | '/_site/'
     | '/_authenticated/admin/contact'
@@ -319,6 +331,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof SiteFaqRouteImport
+      parentRoute: typeof SiteRouteRoute
+    }
+    '/_site/privacy-policy': {
+      id: '/_site/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof SitePrivacyPolicyRouteImport
       parentRoute: typeof SiteRouteRoute
     }
     '/_site/services': {
@@ -437,6 +456,7 @@ interface SiteRouteRouteChildren {
   SiteAboutRoute: typeof SiteAboutRoute
   SiteContactRoute: typeof SiteContactRoute
   SiteFaqRoute: typeof SiteFaqRoute
+  SitePrivacyPolicyRoute: typeof SitePrivacyPolicyRoute
   SiteServicesRoute: typeof SiteServicesRoute
   SiteIndexRoute: typeof SiteIndexRoute
 }
@@ -445,6 +465,7 @@ const SiteRouteRouteChildren: SiteRouteRouteChildren = {
   SiteAboutRoute: SiteAboutRoute,
   SiteContactRoute: SiteContactRoute,
   SiteFaqRoute: SiteFaqRoute,
+  SitePrivacyPolicyRoute: SitePrivacyPolicyRoute,
   SiteServicesRoute: SiteServicesRoute,
   SiteIndexRoute: SiteIndexRoute,
 }
